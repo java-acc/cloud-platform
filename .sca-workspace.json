@@ -1,0 +1,19 @@
+{
+  "name": "byc-cloud-platform",
+  "group_id": "com.byc",
+  "java_version": "17",
+  "spring_boot_version": "3.2.5",
+  "spring_cloud_version": "2023.0.1",
+  "spring_cloud_alibaba_version": "2023.0.1.2",
+  "description": "BYC Cloud Platform",
+  "services": [
+    "user-service"
+  ],
+  "jobs": [
+    "sync-job"
+  ],
+  "ai_services": [
+    "rag-service"
+  ],
+  "commons": []
+}

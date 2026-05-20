@@ -1,0 +1,50 @@
+server:
+  port: 8100
+
+spring:
+  jackson:
+    time-zone: Asia/Shanghai
+    date-format: yyyy-MM-dd HH:mm:ss
+
+langchain4j:
+  open-ai:
+    chat-model:
+      api-key: ${OPENAI_API_KEY:}
+      base-url: ${OPENAI_BASE_URL:https://api.openai.com/v1}
+      model-name: ${OPENAI_CHAT_MODEL:gpt-4o-mini}
+      temperature: 0.2
+      log-requests: false
+      log-responses: false
+    embedding-model:
+      api-key: ${OPENAI_API_KEY:}
+      base-url: ${OPENAI_BASE_URL:https://api.openai.com/v1}
+      model-name: ${OPENAI_EMBED_MODEL:text-embedding-3-small}
+
+app:
+  ai:
+    vectorstore:
+      pg:
+        host: ${PG_HOST:127.0.0.1}
+        port: ${PG_PORT:5432}
+        database: ${PG_DATABASE:rag}
+        user: ${PG_USER:postgres}
+        password: ${PG_PASSWORD:postgres}
+        table: embeddings_rag
+        dimension: 1536
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "health,info,metrics,prometheus"
+  endpoint:
+    health:
+      probes:
+        enabled: true
+      show-details: when_authorized
+
+logging:
+  level:
+    root: INFO
+    com.byc: DEBUG
+    dev.langchain4j: INFO

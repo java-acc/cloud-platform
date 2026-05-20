@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="http://maven.apache.org/POM/4.0.0"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <artifactId>user-service</artifactId>
+    
+    <build>
+        <finalName>${project.artifactId}</finalName>
+        <plugins>
+            <plugin>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <groupId>org.springframework.boot</groupId>
+            </plugin>
+        </plugins>
+    </build>
+    
+    <dependencies>
+        <dependency>
+            <artifactId>common-core</artifactId>
+            <groupId>com.byc</groupId>
+        </dependency>
+        <dependency>
+            <artifactId>common-web</artifactId>
+            <groupId>com.byc</groupId>
+        </dependency>
+        <dependency>
+            <artifactId>common-security</artifactId>
+            <groupId>com.byc</groupId>
+        </dependency>
+        <dependency>
+            <artifactId>common-redis</artifactId>
+            <groupId>com.byc</groupId>
+        </dependency>
+        
+        <dependency>
+            <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+            <groupId>com.alibaba.cloud</groupId>
+        </dependency>
+        <dependency>
+            <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
+            <groupId>com.alibaba.cloud</groupId>
+        </dependency>
+        <dependency>
+            <artifactId>spring-cloud-starter-bootstrap</artifactId>
+            <groupId>org.springframework.cloud</groupId>
+        </dependency>
+        <dependency>
+            <artifactId>spring-cloud-starter-alibaba-sentinel</artifactId>
+            <groupId>com.alibaba.cloud</groupId>
+        </dependency>
+        <dependency>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
+            <groupId>org.springframework.cloud</groupId>
+        </dependency>
+        <dependency>
+            <artifactId>spring-cloud-starter-loadbalancer</artifactId>
+            <groupId>org.springframework.cloud</groupId>
+        </dependency>
+        
+        <dependency>
+            <artifactId>mybatis-plus-spring-boot3-starter</artifactId>
+            <groupId>com.baomidou</groupId>
+        </dependency>
+        <dependency>
+            <artifactId>mysql-connector-j</artifactId>
+            <groupId>com.mysql</groupId>
+            <scope>runtime</scope>
+        </dependency>
+        
+        <dependency>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <artifactId>junit-jupiter</artifactId>
+            <groupId>org.testcontainers</groupId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+    <description>user-service module</description>
+    <modelVersion>4.0.0</modelVersion>
+    
+    <name>user-service</name>
+    
+    <parent>
+        <artifactId>byc-cloud-platform</artifactId>
+        <groupId>com.byc</groupId>
+        <relativePath>../../pom.xml</relativePath>
+        <version>1.0.0-SNAPSHOT</version>
+    </parent>
+</project>

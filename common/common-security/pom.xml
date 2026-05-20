@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="http://maven.apache.org/POM/4.0.0"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <artifactId>common-security</artifactId>
+    
+    <dependencies>
+        <dependency>
+            <artifactId>common-core</artifactId>
+            <groupId>com.byc</groupId>
+        </dependency>
+        <dependency>
+            <artifactId>spring-boot-starter-security</artifactId>
+            <groupId>org.springframework.boot</groupId>
+        </dependency>
+        <dependency>
+            <groupId>jakarta.servlet</groupId>
+            <artifactId>jakarta.servlet-api</artifactId>
+        </dependency>
+        <dependency>
+            <artifactId>jjwt-api</artifactId>
+            <groupId>io.jsonwebtoken</groupId>
+            <version>${jjwt.version}</version>
+        </dependency>
+        <dependency>
+            <artifactId>jjwt-impl</artifactId>
+            <groupId>io.jsonwebtoken</groupId>
+            <scope>runtime</scope>
+            <version>${jjwt.version}</version>
+        </dependency>
+        <dependency>
+            <artifactId>jjwt-jackson</artifactId>
+            <groupId>io.jsonwebtoken</groupId>
+            <scope>runtime</scope>
+            <version>${jjwt.version}</version>
+        </dependency>
+    </dependencies>
+    
+    <description>JWT-based authentication primitives + opinionated SecurityFilterChain.</description>
+    <modelVersion>4.0.0</modelVersion>
+    <name>common-security</name>
+    
+    <parent>
+        <artifactId>common</artifactId>
+        <groupId>com.byc</groupId>
+        <relativePath>../pom.xml</relativePath>
+        <version>1.0.0-SNAPSHOT</version>
+    </parent>
+    
+    <properties>
+        <jjwt.version>0.12.5</jjwt.version>
+    </properties>
+</project>
