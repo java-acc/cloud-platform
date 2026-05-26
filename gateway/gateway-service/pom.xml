@@ -1,78 +1,77 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns="http://maven.apache.org/POM/4.0.0"
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    
+    <parent>
+        <groupId>com.byc</groupId>
+        <artifactId>byc-cloud-platform</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+        <relativePath>../../pom.xml</relativePath>
+    </parent>
     <artifactId>gateway-service</artifactId>
+    
+    <name>gateway-service</name>
+    <description>API Gateway built on Spring Cloud Gateway + Nacos + Sentinel</description>
+    
+    <dependencies>
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-sentinel</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba.csp</groupId>
+            <artifactId>sentinel-spring-cloud-gateway-adapter</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.byc</groupId>
+            <artifactId>common-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webflux-ui</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-bootstrap</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-gateway</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.projectreactor</groupId>
+            <artifactId>reactor-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
     
     <build>
         <finalName>${project.artifactId}</finalName>
         <plugins>
             <plugin>
-                <artifactId>spring-boot-maven-plugin</artifactId>
                 <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
         </plugins>
     </build>
-    
-    <dependencies>
-        <dependency>
-            <artifactId>spring-cloud-starter-gateway</artifactId>
-            <groupId>org.springframework.cloud</groupId>
-        </dependency>
-        <dependency>
-            <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
-            <groupId>com.alibaba.cloud</groupId>
-        </dependency>
-        <dependency>
-            <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
-            <groupId>com.alibaba.cloud</groupId>
-        </dependency>
-        <dependency>
-            <artifactId>spring-cloud-starter-bootstrap</artifactId>
-            <groupId>org.springframework.cloud</groupId>
-        </dependency>
-        <dependency>
-            <artifactId>spring-cloud-starter-alibaba-sentinel</artifactId>
-            <groupId>com.alibaba.cloud</groupId>
-        </dependency>
-        <dependency>
-            <artifactId>sentinel-spring-cloud-gateway-adapter</artifactId>
-            <groupId>com.alibaba.csp</groupId>
-        </dependency>
-        <dependency>
-            <artifactId>spring-boot-starter-actuator</artifactId>
-            <groupId>org.springframework.boot</groupId>
-        </dependency>
-        <dependency>
-            <artifactId>springdoc-openapi-starter-webflux-ui</artifactId>
-            <groupId>org.springdoc</groupId>
-        </dependency>
-        
-        <dependency>
-            <artifactId>common-core</artifactId>
-            <groupId>com.byc</groupId>
-        </dependency>
-        
-        <dependency>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <groupId>org.springframework.boot</groupId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <artifactId>reactor-test</artifactId>
-            <groupId>io.projectreactor</groupId>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
-    <description>API Gateway built on Spring Cloud Gateway + Nacos + Sentinel</description>
-    <modelVersion>4.0.0</modelVersion>
-    
-    <name>gateway-service</name>
-    
-    <parent>
-        <artifactId>byc-cloud-platform</artifactId>
-        <groupId>com.byc</groupId>
-        <relativePath>../../pom.xml</relativePath>
-        <version>1.0.0-SNAPSHOT</version>
-    </parent>
 </project>

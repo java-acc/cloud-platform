@@ -1,25 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns="http://maven.apache.org/POM/4.0.0"
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <artifactId>common</artifactId>
-    
-    <description>Shared libraries</description>
     
     <modelVersion>4.0.0</modelVersion>
+    
+    <parent>
+        <groupId>com.byc</groupId>
+        <artifactId>byc-cloud-platform</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+    <artifactId>common</artifactId>
+    <packaging>pom</packaging>
+    <name>common</name>
+    
+    <description>Shared libraries</description>
     <modules>
         <module>common-core</module>
         <module>common-web</module>
         <module>common-security</module>
         <module>common-redis</module>
     </modules>
-    <name>common</name>
-    <packaging>pom</packaging>
-    
-    <parent>
-        <artifactId>byc-cloud-platform</artifactId>
-        <groupId>com.byc</groupId>
-        <relativePath>../pom.xml</relativePath>
-        <version>1.0.0-SNAPSHOT</version>
-    </parent>
 </project>
