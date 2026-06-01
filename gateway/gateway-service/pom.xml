@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    
+
     <parent>
         <groupId>com.byc</groupId>
         <artifactId>byc-cloud-platform</artifactId>
@@ -10,10 +9,10 @@
         <relativePath>../../pom.xml</relativePath>
     </parent>
     <artifactId>gateway-service</artifactId>
-    
+
     <name>gateway-service</name>
+
     <description>API Gateway built on Spring Cloud Gateway + Nacos + Sentinel</description>
-    
     <dependencies>
         <dependency>
             <groupId>com.alibaba.cloud</groupId>
@@ -64,7 +63,7 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-    
+
     <build>
         <finalName>${project.artifactId}</finalName>
         <plugins>
