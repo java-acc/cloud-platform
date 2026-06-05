@@ -105,14 +105,13 @@ services:
     image: apache/seata-server:2.5.0
     container_name: seata
     hostname: seata
-    restart: unless-stopped
+    restart: always
     ports:
       - 8091:8091
-      - 7091:7091
     environment:
       - SEATA_PORT=8091
       - STORE_MODE=db
-      - SEATA_IP=seata_ip
+#      - SEATA_IP=seata_ip
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /etc/timezone:/etc/timezone:ro
