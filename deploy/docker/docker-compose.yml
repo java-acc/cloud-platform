@@ -1,60 +1,169 @@
-version: "3.9"
-
-# Local development stack: Nacos + MySQL + Redis + Sentinel dashboard.
-# Bring it up with:  docker compose -f deploy/docker/docker-compose.yml up -d
-
 services:
-  nacos:
-    image: nacos/nacos-server:v2.3.2
-    container_name: nacos
-    environment:
-      - MODE=standalone
-      - NACOS_AUTH_ENABLED=true
-      - NACOS_AUTH_TOKEN=SecretKey012345678901234567890123456789012345678901234567890123456789
-      - NACOS_AUTH_IDENTITY_KEY=serverIdentity
-      - NACOS_AUTH_IDENTITY_VALUE=security
-    ports:
-      - "8848:8848"
-      - "9848:9848"
+  rocketmq-namesrv:
+    image: apache/rocketmq:5.3.1
+    container_name: rocketmq-namesrv
+    hostname: rocketmq-namesrv
+    restart: always
+    command: sh mqnamesrv
     volumes:
-      - nacos-data:/home/nacos/data
-      - nacos-logs:/home/nacos/logs
-    restart: unless-stopped
-
-  mysql:
-    image: mysql:8.4
-    container_name: mysql
-    environment:
-      - MYSQL_ROOT_PASSWORD=root
-      - MYSQL_DATABASE=byc_cloud_platform
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
     ports:
-      - "3306:3306"
+      - "9876:9876"
+    networks:
+      - dev_network
+  rocketmq-broker:
+    image: apache/rocketmq:5.3.1
+    container_name: rocketmq-broker
+    hostname: rocketmq-broker
+    restart: always
     volumes:
-      - mysql-data:/var/lib/mysql
-    command:
-      - --default-authentication-plugin=caching_sha2_password
-      - --character-set-server=utf8mb4
-      - --collation-server=utf8mb4_unicode_ci
-    restart: unless-stopped
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+    depends_on:
+      - rocketmq-namesrv
+    environment:
+      NAMESRV_ADDR: rocketmq-namesrv:9876
+    command: >
+      sh mqbroker
+      -n rocketmq-namesrv:9876
+      --enable-proxy
+    ports:
+      - "10909:10909"
+      - "10911:10911"
+      - "10912:10912"
+      - "8081:8081"
+    networks:
+      - dev_network
+  rocketmq-dashboard:
+    image: apacherocketmq/rocketmq-dashboard:latest
+    container_name: rocketmq-dashboard
+    hostname: rocketmq-dashboard
+    restart: always
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+    depends_on:
+      - rocketmq-namesrv
+    environment:
+      JAVA_OPTS: >
+        -Drocketmq.namesrv.addr=rocketmq-namesrv:9876
+    ports:
+      - "8088:8080"
+    networks:
+      - dev_network
 
   redis:
-    image: redis:7.2-alpine
+    image: redis:7.0.15
     container_name: redis
-    ports:
-      - "6379:6379"
+    hostname: redis
+    restart: always
     volumes:
-      - redis-data:/data
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+    ports:
+      - 6379:6379
+    networks:
+      - dev_network
+
+  nacos:
+    image: nacos/nacos-server:v3.0.3
+    container_name: nacos
+    hostname: nacos
+    restart: always
+    environment:
+      - MODE=standalone
+      - SPRING_DATASOURCE_PLATFORM=postgresql
+      - MYSQL_SERVICE_HOST=postgresql
+      - MYSQL_SERVICE_PORT=5432
+      - MYSQL_SERVICE_DB_NAME=nacos
+      - MYSQL_SERVICE_PASSWORD=nacos
+      - MYSQL_DATABASE_NUM=1
+      - MYSQL_SERVICE_DB_PARAM=
+      - NACOS_DEBUG=y
+      - NACOS_AUTH_ENABLED=true
+      - NACOS_AUTH_TOKEN=0fAK8JfjLusH6PaPbmGKbcK7AsZAkU9XUat03D0unN4Lq1Ufimaru6fX6082hRAnDttadphB7krGGZjpXaYvW3vt5TAm8Xn3ammu
+      - NACOS_AUTH_IDENTITY_KEY=nacos
+      - NACOS_AUTH_IDENTITY_VALUE=nacos
+    ports:
+      - 8080:8080
+      - 8848:8848
+      - 9848:9848
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+      - ./nacos/conf:/home/nacos/conf
+      - ./nacos/plugins:/home/nacos/plugins
+      - nacos-data:/home/nacos/data
+      - nacos-logs:/home/nacos/logs
+    networks:
+      - dev_network
+    depends_on:
+      - postgres
+
+  seata:
+    image: apache/seata-server:2.5.0
+    container_name: seata
+    hostname: seata
     restart: unless-stopped
+    ports:
+      - 8091:8091
+      - 7091:7091
+    environment:
+      - SEATA_PORT=8091
+      - STORE_MODE=db
+      - SEATA_IP=seata_ip
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+      - "./seata-server/resources:/seata-server/resources"
+    networks:
+      - dev_network
+    depends_on:
+      - postgres
 
   sentinel-dashboard:
-    image: bladex/sentinel-dashboard:1.8.7
-    container_name: sentinel-dashboard
+    image: cnorgbyc/sentinel-dashboard:1.8.8
+    container_name: sentinel
+    hostname: sentinel
+    restart: always
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
     ports:
-      - "8858:8858"
-    restart: unless-stopped
+      - 8858:8858
+    networks:
+      - dev_network
+    healthcheck:
+      test: [ "CMD", "wget", "-q", "-O", "-", "http://localhost:8858" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  postgres:
+    image: postgres:17.6
+    container_name: postgresql
+    hostname: postgresql
+    restart: always
+    command: postgres -c "shared_preload_libraries=pg_stat_statements"
+    # mem_limit: 512m
+    environment:
+      - TZ=Asia/Shanghai
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_USER=root
+      - POSTGRES_DB=postgres
+    volumes:
+      - pgsql-data:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    networks:
+      - dev_network
 
 volumes:
   nacos-data:
   nacos-logs:
-  mysql-data:
-  redis-data:
+  pgsql-data:
+networks:
+  dev_network:
+    driver: bridge
