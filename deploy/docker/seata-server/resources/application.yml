@@ -1,14 +1,20 @@
 server:
   port: 8091
+
 spring:
   application:
     name: seata-server
   main:
     web-application-type: none
+
 logging:
-#  config: classpath:logback-spring.xml
+#  level:
+#    org.apache.seata.config: DEBUG
+#    org.apache.seata.config.nacos: TRACE
+#    com.alibaba.nacos: DEBUG
+  config: classpath:logback-spring.xml
   file:
-    path: /tmp/logs/seata
+    path: ${log.home:${user.home}/logs/seata}
   extend:
     logstash-appender:
       # off by default
@@ -27,30 +33,86 @@ logging:
       # off by default
       enabled: false
 
+console:
+  user:
+    username: seata
+    password: seata
+
 seata:
   config:
     type: nacos
     nacos:
-      server-addr: 192.168.31.49:8848
-      namespace: dev
+      server-addr: nacos:8848
+      namespace: 40d932a0-a329-4909-bc9b-b60cbfb0513a
       group: SEATA_GROUP
       username: nacos
       password: nacos
-#      context-path: nacos
+      context-path:
       data-id: seataServer.properties
   registry:
     type: nacos
     nacos:
       application: seata-server
-      server-addr: 192.168.31.49:8848
+      server-addr: nacos:8848
       group: SEATA_GROUP
-      namespace: dev
-#      cluster: default
+      namespace: 40d932a0-a329-4909-bc9b-b60cbfb0513a
+      cluster: default
       username: nacos
       password: nacos
-#      context-path:
+      context-path:
+#  metrics:
+#    enabled: false
+#    exporter-list: prometheus
+#    exporter-prometheus-port: 9898
+#    registry-type: compact
+#  server:
+#    enable-check-auth: true
+#    enable-parallel-request-handle: true
+#    enableParallelRequestHandle: true
+#    max-commit-retry-timeout: -1
+#    max-rollback-retry-timeout: -1
+#    recovery:
+#      async-committing-retry-period: 1000
+#      committing-retry-period: 1000
+#      rollbacking-retry-period: 1000
+#      timeout-retry-period: 1000
+#    retry-dead-threshold: 130000
+#    rollback-failed-unlock-enable: false
+#    service-port: 8091
+#    session:
+#      branch-async-queue-size: 5000
+#      enable-branch-async-remove: false
+#    undo:
+#      log-delete-period: 86400000
+#      log-save-days: 7
+#    xaer-nota-retry-timeout: 60000
 #  store:
-#    # support: file 、 db 、 redis 、 raft
-#    mode: file
-  #  server:
-  #    service-port: 8091 #If not configured, the default is '${server.port} + 1000'
+#    db:
+#      branch-table: branch_table
+#      datasource: druid
+#      db-type: postgresql
+#      distributed-lock-table: distributed_lock
+#      driver-class-name: org.postgresql.Driver
+#      global-table: global_table
+#      lock-table: lock_table
+#      max-conn: 100
+#      max-wait: 5000
+#      min-conn: 10
+#      password: root
+#      query-limit: 1000
+#      url: jdbc:postgresql://postgresql:5432/seata
+#      user: root
+#    lock:
+#      mode: db
+#    mode: db
+#    session:
+#      mode: db
+#  transport:
+#    enable-tc-server-batch-send-response: false
+#    rpc-tc-request-timeout: 15000
+#    shutdown:
+#      wait: 3
+#    thread-factory:
+#      boss-thread-prefix: NettyBoss
+#      boss-thread-size: 1
+#      worker-thread-prefix: NettyServerNIOWorker
