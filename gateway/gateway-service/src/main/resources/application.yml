@@ -50,12 +50,6 @@ management:
     readinessstate:
       enabled: true
 
-springdoc:
-  swagger-ui:
-    path: /swagger-ui.html
-    config-url: /v3/api-docs/swagger-config
-    urls: [ ]
-
 logging:
   level:
     root: INFO
