@@ -1,0 +1,38 @@
+name: Check and Auto-Close PR
+
+on:
+  pull_request_target:
+    types: [opened, synchronize]
+    branches:
+      - master
+
+jobs:
+  check-and-close:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+
+    steps:
+      - name: Verify Branch and Auto Close
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          SOURCE_BRANCH: ${{ github.event.pull_request.head.ref }}
+        run: |
+          echo "当前尝试合并到 master 的源分支为: $SOURCE_BRANCH"
+          
+          # 检查分支名是否不等于 dev
+          if [[ "$SOURCE_BRANCH" == "dev" ]]; then
+            echo "✅ 分支验证通过，允许保持开启并等待审查。"
+          else
+            echo "❌ 分支不合规，准备自动关闭 PR。"
+            
+            # 1. 在 PR 下方发表评论解释原因
+            gh pr comment $PR_NUMBER --body "❌ **合并失败：** 只有 \`dev\` 分支允许合并到 \`master\`。当前分支 (\`$SOURCE_BRANCH\`) 不符合规范，系统已自动关闭此 PR。"
+            
+            # 2. 自动关闭该 PR
+            gh pr close $PR_NUMBER
+            
+            # 3. 让当前的 CI 状态也显示为失败
+            exit 1
+          fi
