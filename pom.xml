@@ -38,11 +38,10 @@
     <mybatis-plus.version>3.5.16</mybatis-plus.version>
     <mysql-connector.version>8.4.0</mysql-connector.version>
 
-    <spring-boot.version>3.5.0</spring-boot.version>
+    <spring-boot.version>3.5.14</spring-boot.version>
     <spring-cloud-alibaba.version>2025.0.0.0</spring-cloud-alibaba.version>
-    <spring-cloud.version>2025.0.0</spring-cloud.version>
-    <knife4j.version>4.4.0</knife4j.version>
-    <testcontainers.version>1.19.8</testcontainers.version>
+    <spring-cloud.version>2025.0.2</spring-cloud.version>
+    <knife4j.version>4.5.0</knife4j.version>
 
     <sentinel.version>1.8.9</sentinel.version>
     <nacos.version>3.1.1</nacos.version>
@@ -82,13 +81,6 @@
         <scope>import</scope>
       </dependency>
 
-      <dependency>
-        <groupId>org.testcontainers</groupId>
-        <artifactId>testcontainers-bom</artifactId>
-        <version>${testcontainers.version}</version>
-        <type>pom</type>
-        <scope>import</scope>
-      </dependency>
       <dependency>
         <groupId>cn.hutool</groupId>
         <artifactId>hutool-all</artifactId>
