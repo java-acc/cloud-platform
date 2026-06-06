@@ -2,16 +2,16 @@ name: Build and Test
 
 on:
   push:
-    branches: [ "master", "dev" ]
-    paths-ignore: [ "**.md" ]
+    branches: [ "master" ]
+    paths-ignore: [ "**.md", "deploy/**" ]
   pull_request:
-    branches: [ "master", "dev" ]
-    paths-ignore: [ "**.md" ]
+    branches: [ "master" ]
+    paths-ignore: [ "**.md", "deploy/**" ]
 permissions:
   contents: read
 jobs:
   lint:
-    if: (github.repository == 'java-acc/byc-cloud-platform')
+    if: (github.repository == 'java-acc/cloud-platform')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -30,7 +30,7 @@ jobs:
       - name: Checkstyle Verification
         run: mvn checkstyle:check --file pom.xml
   build:
-    if: (github.repository == 'java-acc/byc-cloud-platform')
+    if: (github.repository == 'java-acc/cloud-platform')
     needs: lint # 确保 lint（格式和规范检查）通过后再执行构建，节省资源
     runs-on: ubuntu-latest
     steps:
