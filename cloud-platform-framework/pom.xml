@@ -71,6 +71,7 @@
     <maven-javadoc-plugin.version>3.12.0</maven-javadoc-plugin.version>
     <maven-dependency-plugin.version>3.11.0</maven-dependency-plugin.version>
     <duplicate-finder-maven-plugin.version>2.0.1</duplicate-finder-maven-plugin.version>
+    <license-maven-plugin.version>2.7.1</license-maven-plugin.version>
   </properties>
 
   <dependencyManagement>
@@ -500,6 +501,33 @@
               <checkRuntimeClasspath>true</checkRuntimeClasspath>
               <checkTestClasspath>false</checkTestClasspath>
             </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>license-maven-plugin</artifactId>
+        <version>${license-maven-plugin.version}</version>
+        <configuration>
+          <outputDirectory>${project.basedir}/../</outputDirectory>
+          <thirdPartyFilename>NOTICE.txt</thirdPartyFilename>
+          <!-- 除掉 test 和 provided 等范围 -->
+          <includedScopes>compile,runtime</includedScopes>
+          <!-- 只统计直接依赖 -->
+          <includeTransitiveDependencies>true</includeTransitiveDependencies>
+          <sortByGroupId>true</sortByGroupId>
+          <!-- 排除掉大厂的，直接在最开始添加 -->
+          <excludedGroups>^(org\.springframework|org\.apache|com\.alibaba)(\..*)?</excludedGroups>
+          <!-- 需要排除的模块 -->
+          <excludedModules></excludedModules>
+        </configuration>
+        <executions>
+          <execution>
+            <id>aggregate-licenses</id>
+            <phase>prepare-package</phase>
+            <goals>
+              <goal>aggregate-add-third-party</goal>
+            </goals>
           </execution>
         </executions>
       </plugin>
