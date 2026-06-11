@@ -515,7 +515,7 @@
           <includedScopes>compile,runtime</includedScopes>
           <!-- 只统计直接依赖 -->
           <includeTransitiveDependencies>true</includeTransitiveDependencies>
-          <sortByGroupId>true</sortByGroupId>
+          <sortByGroupIdAndArtifactId>true</sortByGroupIdAndArtifactId>
           <!-- 排除掉大厂的，直接在最开始添加 -->
           <excludedGroups>^(org\.springframework|org\.apache|com\.alibaba)(\..*)?</excludedGroups>
           <!-- 需要排除的模块 -->
