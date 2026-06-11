@@ -24,11 +24,11 @@ jobs:
           cache: 'maven'
 
       - name: Format Check
-        run: mvn spotless:check --file pom.xml
+        run: mvn -f cloud-platform-framework/pom.xml spotless:check --file pom.xml
         continue-on-error: true # 避免格式插件未配置时直接报错
 
       - name: Checkstyle Verification
-        run: mvn checkstyle:check --file pom.xml
+        run: mvn -f cloud-platform-framework/pom.xml checkstyle:check --file pom.xml
   build:
     if: (github.repository == 'java-acc/cloud-platform')
     needs: lint # 确保 lint（格式和规范检查）通过后再执行构建，节省资源
@@ -45,8 +45,8 @@ jobs:
 
       # 运行测试环节
       - name: Run Tests
-        run: mvn test --file pom.xml
+        run: mvn -f cloud-platform-framework/pom.xml test --file pom.xml
 
       # 打包构建环节（跳过测试，因为上一步已经跑过了）
       - name: Build with Maven
-        run: mvn -B package -DskipTests --file pom.xml
+        run: mvn -f cloud-platform-framework/pom.xml -B package -DskipTests --file pom.xml
