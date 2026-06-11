@@ -1,0 +1,169 @@
+services:
+  rocketmq-namesrv:
+    image: apache/rocketmq:5.3.1
+    container_name: rocketmq-namesrv
+    hostname: rocketmq-namesrv
+    restart: always
+    command: sh mqnamesrv
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+    ports:
+      - "9876:9876"
+    networks:
+      - dev_network
+  rocketmq-broker:
+    image: apache/rocketmq:5.3.1
+    container_name: rocketmq-broker
+    hostname: rocketmq-broker
+    restart: always
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+    depends_on:
+      - rocketmq-namesrv
+    environment:
+      NAMESRV_ADDR: rocketmq-namesrv:9876
+    command: >
+      sh mqbroker
+      -n rocketmq-namesrv:9876
+      --enable-proxy
+    ports:
+      - "10909:10909"
+      - "10911:10911"
+      - "10912:10912"
+      - "8081:8081"
+    networks:
+      - dev_network
+  rocketmq-dashboard:
+    image: apacherocketmq/rocketmq-dashboard:latest
+    container_name: rocketmq-dashboard
+    hostname: rocketmq-dashboard
+    restart: always
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+    depends_on:
+      - rocketmq-namesrv
+    environment:
+      JAVA_OPTS: >
+        -Drocketmq.namesrv.addr=rocketmq-namesrv:9876
+    ports:
+      - "18082:8082"
+    networks:
+      - dev_network
+
+  redis:
+    image: redis:7.0.15
+    container_name: redis
+    hostname: redis
+    restart: always
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+    ports:
+      - 6379:6379
+    networks:
+      - dev_network
+
+  nacos:
+    image: nacos/nacos-server:v3.0.3
+    container_name: nacos
+    hostname: nacos
+    restart: always
+    environment:
+      - MODE=standalone
+      - SPRING_DATASOURCE_PLATFORM=postgresql
+      - MYSQL_SERVICE_HOST=postgresql
+      - MYSQL_SERVICE_PORT=5432
+      - MYSQL_SERVICE_DB_NAME=nacos
+      - MYSQL_SERVICE_PASSWORD=nacos
+      - MYSQL_DATABASE_NUM=1
+      - MYSQL_SERVICE_DB_PARAM=
+      - NACOS_DEBUG=y
+      - NACOS_AUTH_ENABLED=true
+      - NACOS_AUTH_TOKEN=0fAK8JfjLusH6PaPbmGKbcK7AsZAkU9XUat03D0unN4Lq1Ufimaru6fX6082hRAnDttadphB7krGGZjpXaYvW3vt5TAm8Xn3ammu
+      - NACOS_AUTH_IDENTITY_KEY=nacos
+      - NACOS_AUTH_IDENTITY_VALUE=nacos
+    ports:
+      - 8080:8080
+      - 8848:8848
+      - 9848:9848
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+      - ./nacos/conf:/home/nacos/conf
+      - ./nacos/plugins:/home/nacos/plugins
+      - nacos-data:/home/nacos/data
+      - nacos-logs:/home/nacos/logs
+    networks:
+      - dev_network
+    depends_on:
+      - postgres
+
+  seata:
+    image: apache/seata-server:2.5.0
+    container_name: seata
+    hostname: seata
+    restart: always
+    ports:
+      - 8091:8091
+    environment:
+      - SEATA_PORT=8091
+      - STORE_MODE=db
+#      - SEATA_IP=seata_ip
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+      - "./seata-server/resources:/seata-server/resources"
+    networks:
+      - dev_network
+    depends_on:
+      - postgres
+      - nacos
+
+  sentinel-dashboard:
+    image: cnorgbyc/sentinel-dashboard:1.8.8
+    container_name: sentinel
+    hostname: sentinel
+    restart: always
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+    ports:
+      - 8858:8858
+    networks:
+      - dev_network
+    healthcheck:
+      test: [ "CMD", "wget", "-q", "-O", "-", "http://localhost:8858" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  postgres:
+    image: postgres:17.6
+    container_name: postgresql
+    hostname: postgresql
+    restart: always
+    command: postgres -c "shared_preload_libraries=pg_stat_statements"
+    # mem_limit: 512m
+    environment:
+      - TZ=Asia/Shanghai
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_USER=root
+      - POSTGRES_DB=postgres
+    volumes:
+      - pgsql-data:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    networks:
+      - dev_network
+
+volumes:
+  nacos-data:
+  nacos-logs:
+  pgsql-data:
+networks:
+  dev_network:
+    driver: bridge
