@@ -6,7 +6,7 @@
   <parent>
     <groupId>cn.org.byc</groupId>
     <artifactId>cloud-platform-framework</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>${revision}</version>
   </parent>
   <packaging>jar</packaging>
 
