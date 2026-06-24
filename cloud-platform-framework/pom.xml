@@ -16,6 +16,8 @@
     <module>framework-bom</module>
     <module>framework-common</module>
     <module>framework-mybatis-starter</module>
+    <module>framework-security-starter</module>
+    <module>framework-i18n-starter</module>
   </modules>
 
   <properties>
@@ -39,6 +41,8 @@
     <spring-boot.version>4.0.0</spring-boot.version>
     <spring-cloud-alibaba.version>2025.1.0.0</spring-cloud-alibaba.version>
     <spring-cloud.version>2025.1.0</spring-cloud.version>
+    <spring-security.version>7.1.0</spring-security.version>
+    <spring-grpc.version>1.0.3</spring-grpc.version>
     <langchain4j.version>0.35.0</langchain4j.version>
     <redisson.version>4.5.0</redisson.version>
     <knife4j.version>4.5.0</knife4j.version>
@@ -50,6 +54,9 @@
     <schedulerx.version>1.13.3</schedulerx.version>
     <seata.version>2.5.0</seata.version>
     <druid.version>1.2.28</druid.version>
+    <!-- todo: 等待dubbo支持spring boot 4.x 暂时先使用openfeign -->
+    <dubbo.version>3.3.6</dubbo.version>
+
 
     <jjwt.version>0.13.0</jjwt.version>
     <easy-captcha.version>1.6.2</easy-captcha.version>
@@ -101,6 +108,20 @@
         <groupId>com.alibaba.cloud</groupId>
         <artifactId>spring-cloud-alibaba-dependencies</artifactId>
         <version>${spring-cloud-alibaba.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.dubbo</groupId>
+        <artifactId>dubbo-bom</artifactId>
+        <version>${dubbo.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework.grpc</groupId>
+        <artifactId>spring-grpc-dependencies</artifactId>
+        <version>${spring-grpc.version}</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -180,6 +201,11 @@
       <dependency>
         <groupId>io.jsonwebtoken</groupId>
         <artifactId>jjwt-jackson</artifactId>
+        <version>${jjwt.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.jsonwebtoken</groupId>
+        <artifactId>jjwt-api</artifactId>
         <version>${jjwt.version}</version>
       </dependency>
 
@@ -262,6 +288,27 @@
         <artifactId>easy-captcha</artifactId>
         <version>${easy-captcha.version}</version>
       </dependency>
+
+      <dependency>
+        <groupId>cn.org.byc</groupId>
+        <artifactId>framework-common</artifactId>
+        <version>${revision}</version>
+      </dependency>
+      <dependency>
+        <groupId>cn.org.byc</groupId>
+        <artifactId>framework-i18n-starter</artifactId>
+        <version>${revision}</version>
+      </dependency>
+      <dependency>
+        <groupId>cn.org.byc</groupId>
+        <artifactId>framework-mybatis-starter</artifactId>
+        <version>${revision}</version>
+      </dependency>
+      <dependency>
+        <groupId>cn.org.byc</groupId>
+        <artifactId>framework-security-starter</artifactId>
+        <version>${revision}</version>
+      </dependency>
     </dependencies>
   </dependencyManagement>
 
@@ -271,6 +318,10 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-properties-migrator</artifactId>
       <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
     </dependency>
   </dependencies>
 
@@ -594,5 +645,22 @@
 
     </plugins>
   </reporting>
+
+  <profiles>
+    <profile>
+      <id>fast</id>
+      <properties>
+        <skipTests>true</skipTests>
+        <checkstyle.skip>true</checkstyle.skip>
+        <spotbugs.skip>true</spotbugs.skip>
+        <jacoco.skip>true</jacoco.skip>
+        <enforcer.skip>true</enforcer.skip>
+        <duplicate-finder.skip>true</duplicate-finder.skip>
+        <license.skip>true</license.skip>
+        <maven.javadoc.skip>true</maven.javadoc.skip>
+        <maven.source.skip>true</maven.source.skip>
+      </properties>
+    </profile>
+  </profiles>
 </project>
 
