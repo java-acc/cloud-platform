@@ -41,3 +41,8 @@
 | `lint` | Lint rule changes or fixes | Lint 语法校验规则调整 |
 | `experiment` | Experimental changes | 实验性功能尝试 |
 | `prototype` | Prototype implementation | 原型功能实现 |
+
+```
+# GitToolBox commit message regex
+(?:feat|fix|docs|style|refactor|wip|chore|test|perf|build|ci|revert|hotfix|merge|release|ui|config|deps|cleanup|init|db|api|ux|log|security|i18n|assets|sync|rename|move|remove|upgrade|downgrade|data|monitor|infra|ops|lint|experiment|prototype)(?:\(.*\))?: [a-zA-Z].*\s#\d+
+```
