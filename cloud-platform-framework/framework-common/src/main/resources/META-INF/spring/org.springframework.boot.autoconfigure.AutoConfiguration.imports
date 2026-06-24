@@ -15,3 +15,4 @@
 #
 
 cn.org.byc.framework.common.event.listener.ApplicationReadyEventListener
+cn.org.byc.framework.common.config.SpringUtilAutoConfiguration
