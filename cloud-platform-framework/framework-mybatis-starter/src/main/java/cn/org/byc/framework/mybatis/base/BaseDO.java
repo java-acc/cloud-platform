@@ -1,82 +1,51 @@
 package cn.org.byc.framework.mybatis.base;
 
+import cn.org.byc.framework.mybatis.enums.DataStatusEnum;
 import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.Version;
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * mybatis base model
  *
  * @author Ken
  */
+@Getter
+@Setter
 public abstract class BaseDO implements Serializable {
 
   @Serial
   private static final long serialVersionUID = 1L;
 
+  @TableId(value = "id", type = IdType.ASSIGN_ID)
+  private Long id;
   @TableField(fill = FieldFill.INSERT)
-  private Long creator;
+  private Long createdId;
   @TableField(fill = FieldFill.INSERT)
-  private LocalDateTime createTime;
+  private String createdName;
+  @TableField(fill = FieldFill.INSERT)
+  private LocalDateTime createdDate;
   @TableField(fill = FieldFill.INSERT_UPDATE)
-  private Long updater;
+  private Long updatedId;
   @TableField(fill = FieldFill.INSERT_UPDATE)
-  private LocalDateTime updateTime;
+  private String updatedName;
+  @TableField(fill = FieldFill.INSERT_UPDATE)
+  private LocalDateTime updatedDate;
   @TableLogic
-  private Boolean deleted;
+  @TableField(fill = FieldFill.INSERT)
+  private Integer deleted;
   @Version
+  @TableField(fill = FieldFill.INSERT)
   private Integer version;
+  @TableField(fill = FieldFill.INSERT)
+  private DataStatusEnum status;
 
-
-  public Long getCreator() {
-    return creator;
-  }
-
-  public void setCreator(Long creator) {
-    this.creator = creator;
-  }
-
-  public LocalDateTime getCreateTime() {
-    return createTime;
-  }
-
-  public void setCreateTime(LocalDateTime createTime) {
-    this.createTime = createTime;
-  }
-
-  public Long getUpdater() {
-    return updater;
-  }
-
-  public void setUpdater(Long updater) {
-    this.updater = updater;
-  }
-
-  public LocalDateTime getUpdateTime() {
-    return updateTime;
-  }
-
-  public void setUpdateTime(LocalDateTime updateTime) {
-    this.updateTime = updateTime;
-  }
-
-  public Boolean getDeleted() {
-    return deleted;
-  }
-
-  public void setDeleted(Boolean deleted) {
-    this.deleted = deleted;
-  }
-
-  public Integer getVersion() {
-    return version;
-  }
-
-  public void setVersion(Integer version) {
-    this.version = version;
-  }
 }
