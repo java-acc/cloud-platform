@@ -67,5 +67,9 @@
       <groupId>cn.org.byc</groupId>
       <artifactId>framework-security-starter</artifactId>
     </dependency>
+    <dependency>
+      <groupId>cn.org.byc</groupId>
+      <artifactId>framework-common-ddd</artifactId>
+    </dependency>
   </dependencies>
 </project>
