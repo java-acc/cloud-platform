@@ -23,6 +23,7 @@ import cn.org.byc.framework.event.config.properties.EventProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.rocketmq.spring.core.RocketMQTemplate;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.ApplicationEventPublisher;
@@ -36,12 +37,14 @@ import org.springframework.context.annotation.Bean;
 public class DomainEventAutoConfiguration {
 
   @Bean
+  @ConditionalOnMissingBean(DomainEventPublisher.class)
   @ConditionalOnProperty(prefix = "smart.event", name = "type", havingValue = "local", matchIfMissing = true)
   public DomainEventPublisher domainEventPublisher(ApplicationEventPublisher eventPublisher) {
     return new LocalDomainEventPublisher(eventPublisher);
   }
 
   @Bean
+  @ConditionalOnMissingBean(DomainEventPublisher.class)
   @ConditionalOnProperty(prefix = "smart.event", name = "type", havingValue = "rocketmq")
   public DomainEventPublisher domainEventPublisher(RocketMQTemplate rocketMQTemplate, ObjectMapper objectMapper) {
     return new RocketMqDomainEventPublisher(rocketMQTemplate, objectMapper);
