@@ -18,6 +18,8 @@
     <module>framework-mybatis-starter</module>
     <module>framework-security-starter</module>
     <module>framework-i18n-starter</module>
+    <module>framework-common-event</module>
+    <module>framework-common-ddd</module>
   </modules>
 
   <properties>
@@ -307,6 +309,16 @@
       <dependency>
         <groupId>cn.org.byc</groupId>
         <artifactId>framework-security-starter</artifactId>
+        <version>${revision}</version>
+      </dependency>
+      <dependency>
+        <groupId>cn.org.byc</groupId>
+        <artifactId>framework-common-event</artifactId>
+        <version>${revision}</version>
+      </dependency>
+      <dependency>
+        <groupId>cn.org.byc</groupId>
+        <artifactId>framework-common-ddd</artifactId>
         <version>${revision}</version>
       </dependency>
     </dependencies>
