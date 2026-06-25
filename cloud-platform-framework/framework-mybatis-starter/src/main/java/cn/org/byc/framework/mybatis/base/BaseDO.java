@@ -1,5 +1,6 @@
 package cn.org.byc.framework.mybatis.base;
 
+import cn.org.byc.framework.ddd.Entity;
 import cn.org.byc.framework.mybatis.enums.DataStatusEnum;
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.IdType;
@@ -20,7 +21,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public abstract class BaseDO implements Serializable {
+public abstract class BaseDO extends Entity<Long> implements Serializable {
 
   @Serial
   private static final long serialVersionUID = 1L;
